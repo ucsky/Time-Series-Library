@@ -9,8 +9,7 @@ help:
 conda-build: ## Create Python environement with conda for GPU.
 conda-build:
 	-( \
-	test -f ~/activate/miniconda3 && . ~/activate/miniconda3 || true \
-	&& conda env list | grep '^TSlib\s' > /dev/null  \
+	conda env list | grep '^TSlib\s' > /dev/null  \
 	|| conda create --name TSlib python=$(PYTHON_VERSION) -y \
 	&& conda activate TSlib \
 	&& pip install -U pip \
@@ -24,15 +23,13 @@ conda-build:
 conda-clean: ## Clean Python environement with conda for GPU.
 conda-clean:
 	-(\
-	test -f ~/activate/miniconda3 && . ~/activate/miniconda3 || true \
-	&& conda env remove --name TSlib \
+	conda env remove --name TSlib \
 	)
 
 conda-startlab: ## Startlab Python environement with conda for GPU.
 conda-startlab:
 	-(\
-	test -f ~/activate/miniconda3 && . ~/activate/miniconda3 || true \
-	&& export PYTHONPATH="$$PWD":"$$PYTHONPATH" \
+	export PYTHONPATH="$$PWD":"$$PYTHONPATH" \
 	&& conda activate TSlib \
 	&& jupyter lab --no-browser \
 	)
