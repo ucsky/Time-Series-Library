@@ -2,6 +2,10 @@ SHELL := /bin/bash -i
 PYTHON_VERSION := 3.8
 PYTHON := python$(PYTHON_VERSION)
 
+include .local.env
+.local.env:
+	-@(touch .local.env)
+
 help: 
 	@grep -E '(^[0-9a-zA-Z_-]+:.*?##.*$$)' Makefile | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}'
 
@@ -20,22 +24,36 @@ conda-build:
 	)
 
 
-conda-clean: ## Clean Python environement with conda for GPU.
-conda-clean:
+conda-download-all: ## Download all data.
+conda-download-all:
 	-(\
-	conda env remove --name TSlib \
+	conda activate TSlib \
+	&& gdown 1pmXvqWsfUeXWCMz5fqsP8WLKXR5jxY8z \
 	)
 
 conda-startlab: ## Startlab Python environement with conda for GPU.
 conda-startlab:
 	-(\
-	export PYTHONPATH="$$PWD":"$$PYTHONPATH" \
+	conda activate TSlib \
+	&& export PYTHONPATH="$$PWD":"$$PYTHONPATH" \
 	&& conda activate TSlib \
 	&& jupyter lab --no-browser \
 	)
 
 
-conda-download: ## Download all data.
-conda-download:
-	gdown 1pmXvqWsfUeXWCMz5fqsP8WLKXR5jxY8z
 
+conda-run-imp-weather-timesnet: ## Run imputatoin task with TimesNet for Weather.
+conda-run-imp-weather-timesnet: scripts/imputation/Weather_script/TimesNet.sh 
+	-(\
+	conda activate TSlib \
+	&& export CUDA_VISIBLE_DEVICES=$(CUDA_VISIBLE_DEVICES) \
+	&& bash $< \
+	)
+
+
+conda-clean: ## Clean Python environement with conda for GPU.
+conda-clean:
+	-(\
+	conda deactivate \
+	&& conda env remove --name TSlib \
+	)
