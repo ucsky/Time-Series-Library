@@ -15,6 +15,7 @@ conda-build:
 	&& conda activate TSlib \
 	&& pip install -U pip \
 	&& pip install -r requirements.txt \
+	&& pip install -r requirements/pytorch-gpu.txt \
 	&& pip install -r requirements/install.txt \
 	&& pip install -r requirements/jupyter.txt \
 	)
