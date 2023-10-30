@@ -1,4 +1,4 @@
-export CUDA_VISIBLE_DEVICES=6
+export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-6}
 
 model_name=TimesNet
 
